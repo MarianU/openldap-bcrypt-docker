@@ -1,3 +1,5 @@
+ARG OSIXIA_VER=1.5.0
+
 ########################
 # Build Stage
 ########################
@@ -5,9 +7,9 @@ FROM debian:buster-slim as builder
 
 ## Configuration
 ########################
-ARG OPENLDAP_BUILD_VERSION=OPENLDAP_REL_ENG_2_4_50
+ARG OPENLDAP_BUILD_VERSION=OPENLDAP_REL_ENG_2_4_57
 ARG OPENLDAP_BCRYPT_VERSION=master
-ARG BCRYPT_DEFAULT_WORKFACTOR=8
+ARG BCRYPT_DEFAULT_WORKFACTOR=12
 ARG MAKE_BUILD_JOBS=8
 
 ## Prepare
@@ -36,7 +38,7 @@ WORKDIR /openldap
 ########################
 # RUN Stage
 ########################
-FROM osixia/openldap:1.4.0
+FROM osixia/openldap:${OSIXIA_VER}
 # Copy modules from build to productive image
 COPY --from=builder /libtocopy /usr/lib/ldap/
 ADD bootstrap/ldif/custom/*.ldif /container/service/slapd/assets/config/bootstrap/ldif/custom/
